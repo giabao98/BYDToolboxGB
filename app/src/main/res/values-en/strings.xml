@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">BYD Toolkit GB</string>
+    <string name="accessibility_service_label">BYD Toolkit Key Mapper</string>
+    <string name="accessibility_service_desc">Accessibility service to capture steering wheel hardware keys and automate dual split-screen on BYD vehicles.</string>
+
+    <!-- Top Bar -->
+    <string name="dilink_edition">DiLink OS 4.0 / 5.0 • Global Edition</string>
+    <string name="wifi_connected">Wi-Fi Hotspot: CONNECTED</string>
+    <string name="canbus_sync">CAN-Bus: 100Hz SYNC</string>
+    <string name="emergency_revert">⟲ Safe Rescue / Revert to Stock</string>
+
+    <!-- Permission Gatekeeper -->
+    <string name="permission_gatekeeper_title">BYD VEHICLE SYSTEM PERMISSION CHECK</string>
+    <string name="permission_gatekeeper_subtitle">DiLink OS requires special system permissions to intercept steering wheel keys and automate split screens.</string>
+    <string name="permission_status_missing">PERMISSIONS MISSING • ACCESS BLOCKED</string>
+    <string name="permission_status_ready">ALL PERMISSIONS GRANTED • READY</string>
+    <string name="permission_accessibility_title">1. Accessibility Service</string>
+    <string name="permission_accessibility_desc">Required to intercept hardware steering wheel keys (Next, Mode, Mic) and trigger system split-screen.</string>
+    <string name="permission_overlay_title">2. Display Over Other Apps (Overlay)</string>
+    <string name="permission_overlay_desc">Required to show the 5-second countdown cancellation popup and floating widgets over car apps.</string>
+    <string name="btn_grant_permission">GRANT PERMISSION</string>
+    <string name="btn_recheck_permission">⟳ RE-CHECK PERMISSIONS</string>
+    <string name="btn_continue_to_app">ENTER APPLICATION ❯</string>
+    <string name="permission_granted">GRANTED ✓</string>
+    <string name="permission_not_granted">NOT GRANTED ✕</string>
+
+    <!-- Dashboard -->
+    <string name="dash_system_control">SYSTEM CONTROL CENTER</string>
+    <string name="dash_service_active">Automation Engine: ACTIVE</string>
+    <string name="dash_service_disabled">Automation Engine: DISABLED</string>
+    <string name="dash_master_toggle">Master Switch:</string>
+    <string name="dash_driving_profiles">SELECT DRIVING PROFILE:</string>
+
+    <!-- Language Names -->
+    <string name="lang_vi">Tiếng Việt</string>
+    <string name="lang_en">English</string>
+    <string name="lang_zh">中文</string>
+</resources>

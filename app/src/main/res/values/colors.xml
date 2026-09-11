@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cockpit_bg">#0B0F17</color>
+    <color name="cockpit_surface">#121824</color>
+    <color name="cockpit_surface_card">#1A2333</color>
+    <color name="cyan_primary">#00F2FE</color>
+    <color name="cyan_secondary">#0EA5E9</color>
+    <color name="amber_warning">#F59E0B</color>
+    <color name="crimson_danger">#EF4444</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_muted">#849495</color>
+</resources>

@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">BYD Toolkit GB</string>
+    <string name="accessibility_service_label">比亚迪按键映射助手</string>
+    <string name="accessibility_service_desc">无障碍服务用于捕获比亚迪方向盘实体按键信号并实现自动双分屏功能。</string>
+
+    <!-- Top Bar -->
+    <string name="dilink_edition">DiLink 车机系统 4.0 / 5.0 • 定制增强版</string>
+    <string name="wifi_connected">车载 Wi-Fi 热点: 已连接</string>
+    <string name="canbus_sync">CAN 总线: 100Hz 同步</string>
+    <string name="emergency_revert">⟲ 紧急救援 / 恢复原厂按键</string>
+
+    <!-- Permission Gatekeeper -->
+    <string name="permission_gatekeeper_title">比亚迪车机系统权限安全检查</string>
+    <string name="permission_gatekeeper_subtitle">DiLink 旋转大屏系统需要以下特殊权限以接管方向盘控制与自动分屏功能。</string>
+    <string name="permission_status_missing">权限不足 • 阻止进入系统</string>
+    <string name="permission_status_ready">权限已全部就绪 • 可以使用</string>
+    <string name="permission_accessibility_title">1. 无障碍辅助服务 (Accessibility Service)</string>
+    <string name="permission_accessibility_desc">必须开启以拦截方向盘物理按键（切歌、模式、语音按键）并触发系统分屏。</string>
+    <string name="permission_overlay_title">2. 悬浮窗显示权限 (Display Over Other Apps)</string>
+    <string name="permission_overlay_desc">必须开启以在车机启动时显示 5 秒倒计时取消悬浮弹窗及快捷控制球。</string>
+    <string name="btn_grant_permission">立即授予权限</string>
+    <string name="btn_recheck_permission">⟳ 重新检查权限</string>
+    <string name="btn_continue_to_app">进入应用程序 ❯</string>
+    <string name="permission_granted">已开启 ✓</string>
+    <string name="permission_not_granted">未开启 ✕</string>
+
+    <!-- Dashboard -->
+    <string name="dash_system_control">车机系统控制中心</string>
+    <string name="dash_service_active">自动化引擎: 运行中</string>
+    <string name="dash_service_disabled">自动化引擎: 已停用</string>
+    <string name="dash_master_toggle">主开关:</string>
+    <string name="dash_driving_profiles">选择驾驶模式预设:</string>
+
+    <!-- Language Names -->
+    <string name="lang_vi">Tiếng Việt</string>
+    <string name="lang_en">English</string>
+    <string name="lang_zh">中文</string>
+</resources>

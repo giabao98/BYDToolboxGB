@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">BYD Toolkit GB</string>
+    <string name="accessibility_service_label">BYD Toolkit Key Mapper</string>
+    <string name="accessibility_service_desc">Dịch vụ hỗ trợ tiếp cận nhận diện và gán thao tác cho phím cứng vô lăng xe BYD, chia đôi màn hình tự động.</string>
+
+    <!-- Top Bar -->
+    <string name="dilink_edition">DiLink OS 4.0 / 5.0 • Phiên Bản Việt Nam</string>
+    <string name="wifi_connected">Wi-Fi Hotspot: ĐÃ KẾT NỐI</string>
+    <string name="canbus_sync">CAN-Bus: 100Hz SYNC</string>
+    <string name="emergency_revert">⟲ Cứu Hộ / Trả Phím Zin</string>
+
+    <!-- Permission Gatekeeper -->
+    <string name="permission_gatekeeper_title">KIỂM TRA QUYỀN HỆ THỐNG XE BYD</string>
+    <string name="permission_gatekeeper_subtitle">Hệ thống DiLink yêu cầu các quyền đặc biệt để nhận diện phím vô lăng và tự động hóa.</string>
+    <string name="permission_status_missing">CHƯA ĐỦ QUYỀN • KHÔNG THỂ TIẾP TỤC</string>
+    <string name="permission_status_ready">ĐÃ ĐỦ QUYỀN HOẠT ĐỘNG</string>
+    <string name="permission_accessibility_title">1. Dịch Vụ Hỗ Trợ Tiếp Cận (Accessibility Service)</string>
+    <string name="permission_accessibility_desc">Bắt buộc để lắng nghe tín hiệu phím bấm cứng trên vô lăng (Next, Mode, Mic) và kích hoạt chia đôi màn hình.</string>
+    <string name="permission_overlay_title">2. Quyền Cửa Sổ Nổi (Display Over Other Apps)</string>
+    <string name="permission_overlay_desc">Bắt buộc để hiển thị hộp thoại đếm ngược 5 giây hủy mở app và bong bóng tiện ích trên màn hình lái.</string>
+    <string name="btn_grant_permission">CẤP QUYỀN NGAY</string>
+    <string name="btn_recheck_permission">⟳ KIỂM TRA LẠI QUYỀN</string>
+    <string name="btn_continue_to_app">VÀO ỨNG DỤNG ❯</string>
+    <string name="permission_granted">ĐÃ BẬT ✓</string>
+    <string name="permission_not_granted">CHƯA BẬT ✕</string>
+
+    <!-- Dashboard -->
+    <string name="dash_system_control">TRUNG TÂM ĐIỀU KHIỂN HỆ THỐNG</string>
+    <string name="dash_service_active">Hệ thống Tự Động Hóa: ĐANG HOẠT ĐỘNG</string>
+    <string name="dash_service_disabled">Hệ thống: ĐÃ TẮT</string>
+    <string name="dash_master_toggle">Tổng thể:</string>
+    <string name="dash_driving_profiles">CHỌN KỊCH BẢN LÁI XE (DRIVING PROFILE):</string>
+
+    <!-- Language Names -->
+    <string name="lang_vi">Tiếng Việt</string>
+    <string name="lang_en">English</string>
+    <string name="lang_zh">中文</string>
+</resources>

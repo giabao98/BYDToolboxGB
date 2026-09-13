@@ -188,20 +188,31 @@ class MainActivity : ComponentActivity() {
 
     private fun openAccessibilitySettings() {
         try {
+            // Cách 1: Thử mở bằng Intent chuẩn
             val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
             startActivity(intent)
         } catch (e: Exception) {
             try {
-                // Fallback to general settings if DiLink blocks the direct accessibility intent
-                val fallbackIntent = Intent(Settings.ACTION_SETTINGS).apply {
+                // Cách 2: BYD giấu intent chuẩn, thử force mở component ẩn của Cài đặt Trợ Năng
+                val hiddenIntent = Intent().apply {
+                    setClassName("com.android.settings", "com.android.settings.Settings\$AccessibilitySettingsActivity")
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 }
-                startActivity(fallbackIntent)
-                Toast.makeText(this, "Hệ thống chặn mở trực tiếp. Vui lòng tìm mục 'Trợ năng (Accessibility)' trong Cài đặt", Toast.LENGTH_LONG).show()
+                startActivity(hiddenIntent)
+                Toast.makeText(this, "Đã dùng thủ thuật mở Trợ Năng ẩn của hệ thống!", Toast.LENGTH_SHORT).show()
             } catch (e2: Exception) {
-                Toast.makeText(this, "Không thể mở Cài đặt. Vui lòng tự vào Cài đặt -> Trợ năng trên màn hình xe", Toast.LENGTH_LONG).show()
+                try {
+                    // Cách 3: Fallback ra ngoài Cài đặt tổng
+                    val fallbackIntent = Intent(Settings.ACTION_SETTINGS).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    }
+                    startActivity(fallbackIntent)
+                    Toast.makeText(this, "Hệ thống khoá chặt. Vui lòng kéo xuống tìm mục 'Trợ năng (Accessibility)'", Toast.LENGTH_LONG).show()
+                } catch (e3: Exception) {
+                    Toast.makeText(this, "Không thể mở Cài đặt. Vui lòng tự vào Cài đặt xe", Toast.LENGTH_LONG).show()
+                }
             }
         }
     }

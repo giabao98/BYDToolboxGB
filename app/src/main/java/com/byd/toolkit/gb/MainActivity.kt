@@ -193,7 +193,16 @@ class MainActivity : ComponentActivity() {
             }
             startActivity(intent)
         } catch (e: Exception) {
-            Toast.makeText(this, "Không thể mở cài đặt tiếp cận trên màn hình xe", Toast.LENGTH_SHORT).show()
+            try {
+                // Fallback to general settings if DiLink blocks the direct accessibility intent
+                val fallbackIntent = Intent(Settings.ACTION_SETTINGS).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                startActivity(fallbackIntent)
+                Toast.makeText(this, "Hệ thống chặn mở trực tiếp. Vui lòng tìm mục 'Trợ năng (Accessibility)' trong Cài đặt", Toast.LENGTH_LONG).show()
+            } catch (e2: Exception) {
+                Toast.makeText(this, "Không thể mở Cài đặt. Vui lòng tự vào Cài đặt -> Trợ năng trên màn hình xe", Toast.LENGTH_LONG).show()
+            }
         }
     }
 

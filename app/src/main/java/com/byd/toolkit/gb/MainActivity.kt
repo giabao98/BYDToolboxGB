@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import com.byd.toolkit.gb.data.model.AppLanguage
 import com.byd.toolkit.gb.service.SteeringKeyAccessibilityService
 import com.byd.toolkit.gb.ui.components.TopCockpitBar
@@ -187,6 +189,24 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun openAccessibilitySettings() {
+        Toast.makeText(this, "Đang thử cấp quyền qua Local ADB (Nhớ bật Gỡ lỗi không dây)...", Toast.LENGTH_SHORT).show()
+        lifecycleScope.launch {
+            val success = com.byd.toolkit.gb.util.AdbHelper.grantAccessibilityLocal()
+            if (success) {
+                runOnUiThread {
+                    Toast.makeText(this@MainActivity, "Cấp quyền Local ADB thành công!", Toast.LENGTH_LONG).show()
+                    refreshPermissionStatus()
+                }
+            } else {
+                runOnUiThread {
+                    Toast.makeText(this@MainActivity, "Local ADB thất bại. Sẽ thử mở Cài đặt...", Toast.LENGTH_SHORT).show()
+                    tryOpenAccessibilitySettingsUI()
+                }
+            }
+        }
+    }
+
+    private fun tryOpenAccessibilitySettingsUI() {
         try {
             // Cách 1: Thử mở bằng Intent chuẩn
             val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).apply {

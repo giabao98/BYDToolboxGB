@@ -243,7 +243,43 @@ fun PermissionGatekeeperScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            // Quick 1-Tap ADB Action
+            if (!isAllGranted) {
+                CockpitCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    backgroundColor = CyanPrimary.copy(alpha = 0.08f),
+                    borderColor = CyanPrimary.copy(alpha = 0.3f)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "⚡ CẤP TỰ ĐỘNG QUA LOCAL ADB (KHUYÊN DÙNG CHO XE BYD)",
+                                color = CyanPrimary,
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "Bật 'Gỡ lỗi không dây' (Port 5555) trên xe, bấm nút này để tự cấp cả Trợ Năng và Cửa Sổ Nổi mà không cần cắm PC.",
+                                color = TextWhite.copy(alpha = 0.8f),
+                                fontSize = 11.sp
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        CockpitButton(
+                            text = "CẤP 1-CHẠM ❯",
+                            onClick = onGrantAccessibility,
+                            modifier = Modifier.width(150.dp),
+                            isPrimary = true
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+            }
 
             // Bottom Action Bar
             Row(
@@ -251,24 +287,32 @@ fun PermissionGatekeeperScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                OutlinedButton(
-                    onClick = onRecheckPermissions,
-                    border = BorderStroke(1.dp, CockpitCardBorder),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.btn_recheck_permission),
-                        color = CyanSecondary,
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    OutlinedButton(
+                        onClick = onRecheckPermissions,
+                        border = BorderStroke(1.dp, CockpitCardBorder),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.btn_recheck_permission),
+                            color = CyanSecondary,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    if (!hasAccessibility && !isAllGranted) {
+                        Spacer(modifier = Modifier.width(12.dp))
+                        TextButton(onClick = onContinue) {
+                            Text("Bỏ qua & Vào thử giao diện >", color = TextMuted, fontSize = 12.sp)
+                        }
+                    }
                 }
 
                 CockpitButton(
-                    text = stringResource(R.string.btn_continue_to_app),
+                    text = if (hasAccessibility && !hasOverlay) "VÀO ỨNG DỤNG ❯" else stringResource(R.string.btn_continue_to_app),
                     onClick = onContinue,
-                    enabled = isAllGranted,
-                    isPrimary = isAllGranted,
+                    enabled = hasAccessibility || isAllGranted,
+                    isPrimary = isAllGranted || hasAccessibility,
                     modifier = Modifier.width(220.dp)
                 )
             }

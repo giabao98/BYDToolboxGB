@@ -1,6 +1,8 @@
 package com.byd.toolkit.gb
 
 import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.AccessibilityServiceInfo
+import android.view.accessibility.AccessibilityManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -57,7 +59,8 @@ class MainActivity : ComponentActivity() {
             BYDToolkitTheme {
                 val hasAccess = hasAccessibilityState
                 val hasOver = hasOverlayState
-                val isGatekeeperPassed = hasAccess && hasOver
+                var isGatekeeperBypassed by remember { mutableStateOf(false) }
+                val isGatekeeperPassed = (hasAccess && hasOver) || isGatekeeperBypassed
 
                 var currentScreen by remember { mutableStateOf<Screen>(Screen.Dashboard) }
                 var showKeyDetective by remember { mutableStateOf(false) }
@@ -72,13 +75,19 @@ class MainActivity : ComponentActivity() {
                         onRecheckPermissions = {
                             refreshPermissionStatus()
                             if (hasAccessibilityState && hasOverlayState) {
-                                Toast.makeText(this@MainActivity, "Đã đủ quyền! Chào mừng vào BYD Toolkit GB.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@MainActivity, "Đã đủ toàn bộ quyền! Chào mừng vào BYD Toolkit GB.", Toast.LENGTH_SHORT).show()
+                            } else if (hasAccessibilityState) {
+                                Toast.makeText(this@MainActivity, "Trợ Năng: ĐÃ BẬT ✓ | Cửa Sổ Nổi: CHƯA BẬT ✕ (Có thể bấm Vào Ứng Dụng)", Toast.LENGTH_LONG).show()
                             } else {
-                                Toast.makeText(this@MainActivity, "Vẫn còn quyền chưa bật trên màn hình xe.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@MainActivity, "Chưa nhận diện được quyền Trợ Năng. Hãy kiểm tra kết nối ADB.", Toast.LENGTH_SHORT).show()
                             }
                         },
                         onContinue = {
                             refreshPermissionStatus()
+                            isGatekeeperBypassed = true
+                            if (!hasOverlayState) {
+                                Toast.makeText(this@MainActivity, "Đã vào ứng dụng! (Lưu ý: Thiếu Cửa Sổ Nổi sẽ không hiện bảng đếm ngược khi nổ máy)", Toast.LENGTH_LONG).show()
+                            }
                         },
                         currentLanguage = currentLanguageState,
                         onLanguageChange = { newLang ->
@@ -159,22 +168,50 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun checkAccessibilityService(context: Context): Boolean {
+        // Ưu tiên 1: Service instance đang hoạt động
         if (SteeringKeyAccessibilityService.instance != null) {
             return true
         }
-        val expectedComponentName = ComponentName(context, SteeringKeyAccessibilityService::class.java)
+
+        // Ưu tiên 2: Kiểm tra qua AccessibilityManager hệ thống
+        try {
+            val am = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager
+            val enabledServices = am?.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK)
+            if (enabledServices != null) {
+                for (service in enabledServices) {
+                    val serviceName = service.resolveInfo?.serviceInfo?.name ?: ""
+                    if (serviceName.contains("SteeringKeyAccessibilityService")) {
+                        return true
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            // Bỏ qua ngoại lệ hệ thống
+        }
+
+        // Ưu tiên 3: Kiểm tra Secure Settings ENABLED_ACCESSIBILITY_SERVICES
         val enabledServicesSetting = Settings.Secure.getString(
             context.contentResolver,
             Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
         ) ?: return false
+
+        if (enabledServicesSetting.contains("SteeringKeyAccessibilityService")) {
+            return true
+        }
 
         val colonSplitter = TextUtils.SimpleStringSplitter(':')
         colonSplitter.setString(enabledServicesSetting)
         while (colonSplitter.hasNext()) {
             val componentNameString = colonSplitter.next()
             val enabledComponent = ComponentName.unflattenFromString(componentNameString)
-            if (enabledComponent != null && enabledComponent == expectedComponentName) {
-                return true
+            if (enabledComponent != null) {
+                val className = enabledComponent.className
+                val pkgName = enabledComponent.packageName
+                if (className.contains("SteeringKeyAccessibilityService") &&
+                    (pkgName == context.packageName || pkgName == "com.byd.toolkit.gb" || pkgName == "com.byd.toolkit.gb.debug")
+                ) {
+                    return true
+                }
             }
         }
         return false
@@ -189,17 +226,17 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun openAccessibilitySettings() {
-        Toast.makeText(this, "Đang thử cấp quyền qua Local ADB (Nhớ bật Gỡ lỗi không dây)...", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Đang tự động cấp toàn bộ quyền qua Local ADB...", Toast.LENGTH_SHORT).show()
         lifecycleScope.launch {
-            val success = com.byd.toolkit.gb.util.AdbHelper.grantAccessibilityLocal()
+            val success = com.byd.toolkit.gb.util.AdbHelper.grantAccessibilityLocal(this@MainActivity)
             if (success) {
                 runOnUiThread {
-                    Toast.makeText(this@MainActivity, "Cấp quyền Local ADB thành công!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity, "Cấp quyền Local ADB thành công! Đã mở khóa Trợ Năng & Cửa Sổ Nổi.", Toast.LENGTH_LONG).show()
                     refreshPermissionStatus()
                 }
             } else {
                 runOnUiThread {
-                    Toast.makeText(this@MainActivity, "Local ADB thất bại. Sẽ thử mở Cài đặt...", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "Local ADB chưa mở port 5555. Sẽ thử mở Cài đặt...", Toast.LENGTH_SHORT).show()
                     tryOpenAccessibilitySettingsUI()
                 }
             }

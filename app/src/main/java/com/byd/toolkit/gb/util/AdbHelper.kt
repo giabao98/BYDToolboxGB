@@ -59,19 +59,20 @@ object AdbHelper {
                     commands.add("pm grant $pkg android.permission.WRITE_SECURE_SETTINGS")
                 }
 
-                val fullCmd = commands.joinToString(" ; ")
-                Log.i(TAG, "Executing ADB command: $fullCmd")
-
-                val stream = connection.open("shell:$fullCmd")
-                try {
-                    val response = stream.read()
-                    Log.i(TAG, "ADB command finished, response bytes: ${response?.size ?: 0}")
-                } catch (e: Exception) {
-                    Log.d(TAG, "Stream reading ended: ${e.message}")
-                } finally {
+                for (cmd in commands) {
+                    Log.i(TAG, "Executing ADB command: $cmd")
+                    var stream: com.tananaev.adblib.AdbStream? = null
                     try {
-                        stream.close()
-                    } catch (_: Exception) {}
+                        stream = connection.open("shell:$cmd")
+                        val response = stream.read()
+                        Log.i(TAG, "Command finished, response bytes: ${response?.size ?: 0}")
+                    } catch (e: Exception) {
+                        Log.d(TAG, "Stream reading ended: ${e.message}")
+                    } finally {
+                        try {
+                            stream?.close()
+                        } catch (_: Exception) {}
+                    }
                 }
 
                 true
